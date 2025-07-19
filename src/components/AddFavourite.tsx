@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { LikeFilled, HeartFilled } from '@ant-design/icons';
+import { LikeFilled } from '@ant-design/icons';
 import {useFavouritesStores}  from '../store/useFavouritesStore';
 
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
+}
+
 interface Props{
-    movie:any;
+    movie: Movie;
 }
 const AddFavourite = ({movie}:Props) => {
   const [showHeart, setShowHeart] = useState(false);
   const favourites=useFavouritesStores ((state)=> state.favourites);
   const addFavourite = useFavouritesStores((state) => state.addFavourite);
-  // Check if movie is already in favourites to ensure no duplicates.
+//   const removeFavourite= useFavouritesStores((state)=> state.removeFavourite)
 
-  const isAlreadyFavourited = favourites.some((fav: any) => fav.id === movie.id);
+  // Check if movie is already in favourites
+  const isAlreadyFavourited = favourites.some((fav: Movie) => fav.id === movie.id);
 
   const handleClick = () => {
     // Only add if not already favourited
@@ -37,7 +45,6 @@ const AddFavourite = ({movie}:Props) => {
       {showHeart && (
         <div className="heart-burst">
           <LikeFilled />
-
         </div>
       )}
     </div>

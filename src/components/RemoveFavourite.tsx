@@ -6,19 +6,18 @@ interface RemoveFavouriteProps {
 }
 
 export default function RemoveFavourite({ id }: RemoveFavouriteProps) {
-   const favourites=useFavouritesStores ((state)=> state.favourites);
     const removefavourite = useFavouritesStores((state) => state.removeFavourite);
-  const [showDislike, setShowDislike] = useState(false);
+  const [showHeart, setShowHeart] = useState(false);
     const handleClick = () => {
-    setShowDislike(true);
+    setShowHeart(true);
     // Remove from favourites after animation starts
     setTimeout(() => {
-      removefavourite(id);    // Reset animation state after animation completes
+      removefavourite(id);
     }, 100); // Small delay to let animation start
     
-
+    // Reset animation state after animation completes
     setTimeout(() => {
-      setShowDislike(false);
+      setShowHeart(false);
     }, 800); // Match animation duration
   };
   return (<>
@@ -28,7 +27,7 @@ export default function RemoveFavourite({ id }: RemoveFavouriteProps) {
       aria-label="Remove from favourites"
     >
       <DislikeFilled/>
-      {showDislike && (
+      {showHeart && (
         <div className="dislike-burst">
           <DislikeFilled />
         </div>

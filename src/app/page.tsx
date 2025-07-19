@@ -3,6 +3,19 @@ import MovieCard from '../components/MovieCard';
 import { searchMovies, getTrending, getTrendingShows, discoverMoviesByGenre } from '../lib/api';
 import { getMovieGenres } from '../lib/api'; // Keep for getting genre name
 
+interface Movie {
+  id: number;
+  title: string;
+  poster_path: string;
+  release_date: string;
+}
+interface Show {
+  id: number;
+  name: string;
+  poster_path: string;
+  first_air_date: string;
+}
+
 interface Props {
   searchParams?: { q?: string; genre?: string };
 }
@@ -17,7 +30,7 @@ export default async function Home(props: Props) {
   if (genreId) {
     data = await discoverMoviesByGenre(genreId);
     const genres = await getMovieGenres();
-    const currentGenre = genres.find((g: any) => g.id == genreId);
+    const currentGenre = genres.find((g: { id: number }) => g.id == Number(genreId));
     if (currentGenre) {
       pageTitle = `${currentGenre.name} Movies`;
     }
@@ -39,7 +52,7 @@ export default async function Home(props: Props) {
       <h1 className="mb-2 text-3xl font-bold">{pageTitle}</h1>
 
       <div id="mainGrid" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 sm:p-4">
-        {data?.results?.map((movie: any) => (
+        {data?.results?.map((movie: Movie) => (
           <MovieCard
             key={movie.id}
             id={movie.id}
@@ -54,13 +67,13 @@ export default async function Home(props: Props) {
         <>
           <h1 className="mb-2 text-3xl font-bold">Trending Shows</h1>
           <div id="showsGrid" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-2 sm:p-4">
-            {dataShows.results.map((show: any) => (
+            {dataShows.results.map((show: Show) => (
               <MovieCard
                 key={show.id}
                 id={show.id}
-                title={show.name} // TV shows use 'name'
+                title={show.name}
                 poster_path={show.poster_path}
-                release_date={show.first_air_date} // and 'first_air_date'
+                release_date={show.first_air_date}
                 isMovie={false}
               />
             ))}
