@@ -7,11 +7,7 @@ interface CastMember {
   profile_path: string | null;
 }
 
-interface PageProps {
-  params: { id: string };
-}
-
-export default async function CastPage({ params }: PageProps) {
+export default async function CastPage({ params }: { params: { id: string } }) {
   const cast = await getMovieCastById(params.id);
   return (
     <div className="max-w-4xl mx-auto p-4">
