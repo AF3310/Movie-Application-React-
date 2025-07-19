@@ -1,13 +1,18 @@
 import { getMovieCastById } from '../../../../lib/api';
 
-export default async function CastPage({ params }: { params: { id: string } }) {
-  const cast = await getMovieCastById(params.id);
 interface CastMember {
   cast_id?: number;
   id: number;
   name: string;
   profile_path: string | null;
 }
+
+interface PageProps {
+  params: { id: string };
+}
+
+export default async function CastPage({ params }: PageProps) {
+  const cast = await getMovieCastById(params.id);
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4 text-white">Cast</h1>
