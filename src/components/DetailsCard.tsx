@@ -8,11 +8,30 @@ import Link from "next/link";
 
 interface Props {
   id: number;
-  isMovie?:boolean;
+  isMovie?: boolean;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface MovieOrShow {
+  id: number;
+  title?: string;
+  name?: string;
+  overview: string;
+  release_date?: string;
+  first_air_date?: string;
+  backdrop_path?: string | null;
+  vote_average: number;
+  runtime?: number;
+  episode_run_time?: number[];
+  genres?: Genre[];
 }
 
 export default function DetailsCard({ id, isMovie }: Props) {
-  const [movie, setMovie] = useState<any>(null);
+  const [movie, setMovie] = useState<MovieOrShow | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,23 +40,23 @@ export default function DetailsCard({ id, isMovie }: Props) {
       try {
         setLoading(true);
         setError(null);
-        const data = isMovie 
-          ? await getMovieById(String(id)) 
+        const data = isMovie
+          ? await getMovieById(String(id))
           : await getShowById(String(id));
-        
+
         if (data) {
           setMovie(data);
         } else {
-          setError('Failed to load movie details');
+          setError("Failed to load movie details");
         }
       } catch (err) {
-        console.error('Error fetching movie:', err);
-        setError('Failed to load movie details');
+        console.error("Error fetching movie:", err);
+        setError("Failed to load movie details");
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchMovie();
   }, [id, isMovie]);
 
@@ -52,7 +71,7 @@ export default function DetailsCard({ id, isMovie }: Props) {
   if (error || !movie) {
     return (
       <div className="text-center p-8">
-        <p className="text-red-400">{error || 'Movie not found'}</p>
+        <p className="text-red-400">{error || "Movie not found"}</p>
       </div>
     );
   }
@@ -63,10 +82,10 @@ export default function DetailsCard({ id, isMovie }: Props) {
         <img
           src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           className="w-full rounded"
-          alt={movie.title || movie.name}
+          alt={movie.title || movie.name || "Backdrop"}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
+            target.style.display = "none";
           }}
         />
       )}
@@ -74,30 +93,33 @@ export default function DetailsCard({ id, isMovie }: Props) {
       <h1 className="text-2xl font-bold mt-2">{movie.title || movie.name}</h1>
       <p className="text-sm text-gray-400">{movie.release_date || movie.first_air_date}</p>
       <p className="mt-2 text-gray-300">{movie.overview}</p>
-      
+
       {movie.genres && movie.genres.length > 0 && (
         <ul className="mt-2 text-gray-300 flex flex-row mr-3">
-          Genres: {movie.genres.map((element: any, index: any) => (
+          Genres:
+          {movie.genres.map((element: Genre, index: number) => (
             <li key={index} className="mr-2 ml-2 text-gray-300 flex flex-row">
               {element.name}
             </li>
           ))}
         </ul>
       )}
-      
-      <p className="mt-2 text-gray-300">Rating: {movie.vote_average?.toFixed(1)} / 10</p>
-      
-      {/* Display runtime for movies or shows */}
+
+      <p className="mt-2 text-gray-300">
+        Rating: {movie.vote_average?.toFixed(1)} / 10
+      </p>
+
       {movie.runtime && <p className="mt-2 text-gray-300">Runtime: {movie.runtime} min</p>}
+
       {movie.episode_run_time && movie.episode_run_time.length > 0 && (
         <p className="mt-2 text-gray-300">Episode Runtime: {movie.episode_run_time[0]} min</p>
       )}
 
       <div className="flex flex-row mt-1">
-        <AddFavourite movie={movie}/>
-        <RemoveFavourite id={movie.id}/>
+        <AddFavourite movie={movie} />
+        <RemoveFavourite id={movie.id} />
       </div>
-      
+
       <div className="mt-2">
         <Link href={`/movie/${movie.id}/cast`}>
           <button className="text-white font-bold py-2 px-4 rounded mt-2">
