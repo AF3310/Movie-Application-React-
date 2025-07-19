@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+:root {
+  --background: #141414;  
+  --foreground: #fff;
+  /* --accent: #e50914; */
+  --accent: #2ecc71; 
+  /* --accent: #fff500 */
+
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+@keyframes heart-burst {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2) translateY(-50px);
+    opacity: 0;
+  }
+}
+@keyframes dislike-burst{
+    0% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2) translateY(-50px);
+    opacity: 0;
+  }
+}
+.heart-burst {
+  animation: heart-burst 0.8s ease-out;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  color: #2ecc71; /* Tailwind red-500 */
+  font-size: 1.5rem;
+}
+
+.dislike-burst{
+  animation: dislike-burst 0.8s ease-out;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  color: #ef4444; /* Red color to match the red button */
+  font-size: 1.5rem;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--accent);
+}
+
+button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #27ae60;
+}
