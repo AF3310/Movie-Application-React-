@@ -6,7 +6,7 @@ interface Genre {
   id: number;
   name: string;
 }
-
+ 
 export default function NavBarWrapper({ genres }: { genres: Genre[] }) {
   // const pathname = usePathname();
   // We can add logic here to conditionally render the NavBar

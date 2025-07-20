@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBarWrapper from "../components/NavBarWrapper";
 import { getMovieGenres } from "@/lib/api";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white min-h-screen`}>
            {/*Using antialiased to make smoother.  */}
-        <NavBarWrapper genres={genres} />
+           <Suspense>
+           <NavBarWrapper genres={genres} />
+           </Suspense>
+
         <main className="pt-8">{children}</main>
       </body>
     </html>
